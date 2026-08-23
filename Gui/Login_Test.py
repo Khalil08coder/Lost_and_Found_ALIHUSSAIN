@@ -19,5 +19,3 @@ INSERT INTO users (studentID, password) VALUES
 
 conn.commit()
 conn.close()
-
-

@@ -1,31 +1,35 @@
+import sqlite3  # standard library, no install needed
+import os
 
-import sqlite3 #this is from the standard libary hence no download needed
+# Build an absolute path to the database, based on where this file
+# is located. This way, the database file will always be created next to
+DB_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "lost_and_found.db"
+)
 
-DB_FILE = "lost_and_found.db"
 
-
-def get_connection(): 
-    return sqlite3.connect(DB_FILE) #this functionn is needed so every time we want to connect to the database, we can just call this function and it will return a connection object that we can use to interact with the database.
+def get_connection():
+    """Opens and returns a connection to the database."""
+    return sqlite3.connect(DB_FILE)
 
 
 def get_reported_items():
-    '''
+    """
     Items that have NOT been found yet.
     Rule: ItemStatus is blank/NULL -> still reported/lost.
-    '''
-    
-    conn = get_connection() #to make it easier to connect we call this function conn
-    cur = conn.cursor() #this is what actually runs the sql queries and returns the results. The cursor is like a pointer to the database and it is used to execute SQL commands and fetch data from the database.
-    #this is like a query it is used to get the data from the database and also the data is sorted in descending order based on the date lost. The query is used to get the data from the database and also the data is sorted in descending order based on the date lost.
-    cur.execute(""" 
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
         SELECT ItemID, ItemName, DateLost, LocationLost, ItemValue
         FROM ItemTable
         WHERE ItemStatus IS NULL OR TRIM(ItemStatus) = ''
         ORDER BY DateLost DESC
     """)
-    rows = cur.fetchall() # this ensures that all the data doesnt come back automatically and that when asked for they come back. The fetchall() method is used to fetch all the rows of a query result, returning a list. An empty list is returned when no more rows are available.
+    rows = cur.fetchall()
     conn.close()
-    return rows #sends the lists of tuples back to what ever called this function. The rows variable is a list of tuples, where each tuple represents a row in the result set. Each tuple contains the values for the columns specified in the SELECT statement.
+    return rows
 
 
 def get_found_items():
@@ -44,3 +48,37 @@ def get_found_items():
     rows = cur.fetchall()
     conn.close()
     return rows
+
+
+def insert_reported_item(item_name, date_lost, location, item_value):
+    """
+    Saves a newly reported LOST item to the database.
+    Kept separate from the GUI files so Report.py only has to call this
+    one function instead of building SQL directly.
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO ItemTable
+            (ItemName, DateLost, LocationLost, ItemValue, ItemStatus)
+        VALUES (?, ?, ?, ?, NULL)
+    """, (item_name, date_lost, location, item_value))
+    conn.commit()
+    conn.close()
+
+
+def insert_found_item(item_name, date_found, location, item_value):
+    """
+    Saves a newly reported FOUND item to the database.
+    Kept separate from the GUI files so Found.py only has to call this
+    one function instead of building SQL directly.
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO ItemTable
+            (ItemName, DateFound, LocationFound, ItemValue, ItemStatus)
+        VALUES (?, ?, ?, ?, 'Found')
+    """, (item_name, date_found, location, item_value))
+    conn.commit()
+    conn.close()
