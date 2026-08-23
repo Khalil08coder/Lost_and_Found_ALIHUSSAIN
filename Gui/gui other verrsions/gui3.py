@@ -12,24 +12,12 @@ from dbinformation import get_reported_items, get_found_items #pulls in two func
 from Report import open_report_window
 
 
-def launch_main_app():
-    """Builds and shows the main Lost and Found window.
-    This used to run automatically as soon as the file was imported,
-    which meant it always opened first. It's now wrapped in a function
-    so Login.py can call it AFTER a successful login instead."""
-
-    #this code is used to create the foundation of the window
-    ws = Tk()
-    ws.title("Lost and Found")
-    ws.geometry("560x560")
-    ws.configure(bg=BG)
-
     # This code ise for the menu and was used via the help of the internet and also the code is used to create a menu bar with options such as view reported items, view found items, exit and about. The menu bar is placed at the top of the window and also the color of the menu bar is set to white.
     # these open a new window (Toplevel) and show a table (Treeview)
     #although this was used to create via the help of hte internet i have put the video i used to help me out in the development log
     # pulling live data out of the SQLite database
 
-    def view_reported():
+    def  view_reported():
         win = Toplevel(ws) #top level is used to create a new window on top of the main window
         win.title("Reported Items") #this is the same as the main window but it uses "win" instead of "ws" and also the title of the window is set to "Reported Items"
         win.geometry("650x400")
@@ -40,7 +28,7 @@ def launch_main_app():
 
         cols = ("ItemID", "Item Name", "Date Lost", "Location Lost", "Value") #cols means the tables columns
         tree = ttk.Treeview(win, columns=cols, show="headings", height=12) #creates the actual table widget #show="headings" hides the default leftmost "tree" column so it looks like a plain table, not a nested folder tree.
-        for col in cols:
+        for col in cols
             tree.heading(col, text=col)
             tree.column(col, width=110)
         tree.pack(padx=15, pady=10, fill=BOTH, expand=True)
@@ -169,10 +157,3 @@ def launch_main_app():
     ).pack()
 
     ws.mainloop()
-
-
-# Only auto-launch the main app if this file is run directly
-# (e.g. for testing). When imported by Login.py, it won't run
-# until launch_main_app() is explicitly called after login.
-if __name__ == "__main__":
-    launch_main_app()

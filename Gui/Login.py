@@ -2,14 +2,14 @@ import sqlite3
 import tkinter as tk
 from tkinter import messagebox
 
-from gui3 import launch_main_app
+from gui4 import launch_main_app
 
 
 class LoginApp:
     def __init__(self):
         self.login_window = tk.Tk()
         self.login_window.title("Login application")
-
+       
         tk.Label(self.login_window, text="Student ID:").pack()
         self.student_id_entry = tk.Entry(self.login_window)
         self.student_id_entry.pack()
@@ -21,7 +21,7 @@ class LoginApp:
         self.login_button = tk.Button(self.login_window, text="Login", command=self.login)
         self.login_button.pack()
 
-        self.login_window.mainloop()
+        self.login_window.mainloop()    
 
     def login(self):
         conn = sqlite3.connect('lost_and_found.db')
@@ -36,7 +36,7 @@ class LoginApp:
         conn.close()
 
         if user:
-            # Login succeeded: close the login window and open the main app.
+            #if the login is successful then the application will close and then open the next window
             self.login_window.destroy()
             launch_main_app()
         else:

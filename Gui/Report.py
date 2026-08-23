@@ -21,13 +21,13 @@ LOCATIONS = [
 def open_report_window(parent):  #This function gets called apon when someone clicks the report button in the main window. It opens a new window where the user can report a lost item. The function takes a parent parameter, which is the main window that called this function. This is used to make the new window a child of the main window, so it stays on top and is closed when the main window is closed.
     """Opens a new window where the user can report a lost item."""
 
-    # Create the new window
+    # this code creates a new window
     report = Toplevel(parent)
     report.title("Report Lost Item")
     report.geometry("400x420")
     report.configure(bg=BG)
 
-   # This part is for the code at the top of the window
+    #this is for the title at the top
     Label(
         report,
         text="Report Lost Item",

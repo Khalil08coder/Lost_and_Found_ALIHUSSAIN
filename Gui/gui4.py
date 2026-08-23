@@ -10,13 +10,11 @@ from PIL import Image, ImageTk
 from colours import *
 from dbinformation import get_reported_items, get_found_items #pulls in two functions from the database.py file that are used to get the reported and found items from the database
 from Report import open_report_window
-
+from Found import open_found_window
 
 def launch_main_app():
-    """Builds and shows the main Lost and Found window.
-    This used to run automatically as soon as the file was imported,
-    which meant it always opened first. It's now wrapped in a function
-    so Login.py can call it AFTER a successful login instead."""
+    """Builds and shows the main Lost and Found window."""
+    # This used to run automatically as soon as the file was imported, which meant it always opened first. It's now wrapped in a function so Login.py can call it AFTER a successful login instead.
 
     #this code is used to create the foundation of the window
     ws = Tk()
@@ -24,7 +22,8 @@ def launch_main_app():
     ws.geometry("560x560")
     ws.configure(bg=BG)
 
-    # This code ise for the menu and was used via the help of the internet and also the code is used to create a menu bar with options such as view reported items, view found items, exit and about. The menu bar is placed at the top of the window and also the color of the menu bar is set to white.
+  # This code ise for the menu and was used via the help of the internet and also the code is used to create a menu bar with options such as view reported items, view found items, exit and about. 
+    #The menu bar is placed at the top of the window and also the color of the menu bar is set to white.
     # these open a new window (Toplevel) and show a table (Treeview)
     #although this was used to create via the help of hte internet i have put the video i used to help me out in the development log
     # pulling live data out of the SQLite database
@@ -126,7 +125,7 @@ def launch_main_app():
     search = Entry(search_frame, width=28, font=("Arial", 12))
     search.grid(row=0, column=0, padx=(0, 8))
 
-    #thhis code is for the search bar button
+    #tx`his code is for the search bar button
 
     Button(
         search_frame,
@@ -134,12 +133,12 @@ def launch_main_app():
         width=10,
         bg=FOUND_COLOR,
         fg="white"
-    ).grid(row=0, column=1)
+    ).grid(row=0, column=1) 
 
     #this code is for the image, resizeing the image and also the placement of the image in the middle of the card and also the size of the image is set to 200x200
 
     img = Image.open("Lost_And_Found.png")
-    img = img.resize((200, 150))
+    img = img.resize((200, 150)) 
     image = ImageTk.PhotoImage(img)
 
     picture = Label(card, image=image, bg=BG)
@@ -165,7 +164,8 @@ def launch_main_app():
         width=18,
         height=3,
         bg=FOUND_COLOR,
-        fg="white"
+        fg="white",
+        command=lambda: open_found_window(ws)
     ).pack()
 
     ws.mainloop()
